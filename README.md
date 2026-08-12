@@ -58,7 +58,7 @@ npm start
 1. Claude.ai 접속 → **Customize(맞춤 설정)** → **Connectors(커넥터)**
 2. **"+"** 버튼 클릭
 3. 아래 값을 그대로 입력
-   - 이름: `표준품셈(2026)`
+   - 이름: `표준품셈`
    - URL: `https://pyojunpumsem-mcp.fly.dev/mcp`
 4. **Add** → **Connect**
 
@@ -73,7 +73,7 @@ MSIX 설치 시 `C:\Users\<사용자명>\AppData\Local\Packages\Claude_pzs8sxrjx
 ```json
 {
   "mcpServers": {
-    "표준품셈(2026)": {
+    "표준품셈": {
       "command": "npx",
       "args": [
         "-y",
@@ -192,7 +192,7 @@ print(response.text)
 ```
 
 > 참고: Gemini 쪽은 `resources`/`prompts` 등 MCP의 다른 기능은 지원하지 않으며, 도구(tools) 목록만 조회해 사용합니다.
-> 표준품셈(2026) MCP는 도구 기반으로만 구성되어 있어 이 부분은 문제되지 않습니다.
+> 표준품셈 MCP는 도구 기반으로만 구성되어 있어 이 부분은 문제되지 않습니다.
 
 ## 재배포 / 새로 배포하기
 

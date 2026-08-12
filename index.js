@@ -100,10 +100,10 @@ function renderItem(item, { includeTables = true } = {}) {
 function createServer() {
   const server = new McpServer(
     {
-      name: "표준품셈(2026)",
+      name: "표준품셈",
       version: "1.0.0",
       description:
-        "2026년 건설공사 표준품셈(공통부문 1~8장, 건축부문 전체, 유지관리부문 전체) 검색 MCP 서버. 참고용이며 공식 수치는 한국건설기술연구원 CODIL에서 확인 필요.",
+        "2026년 건설공사 표준품셈(공통·토목·건축·기계설비·유지관리 5개 부문 전체) 검색 MCP 서버. 참고용이며 공식 수치는 한국건설기술연구원 CODIL에서 확인 필요.",
     },
     { capabilities: { tools: {} } }
   );
@@ -118,7 +118,7 @@ function createServer() {
       inputSchema: {
         query: z.string().describe("검색어 (예: '철근콘크리트', '방수', '조적 인력')"),
         bumun: z
-          .enum(["공통부문", "건축부문", "유지관리부문"])
+          .enum(["공통부문", "토목부문", "건축부문", "기계설비부문", "유지관리부문"])
           .optional()
           .describe("부문으로 결과를 한정하고 싶을 때만 지정"),
         limit: z.number().int().min(1).max(50).optional().describe("최대 반환 개수 (기본 15)"),
@@ -163,14 +163,20 @@ function createServer() {
     {
       title: "표준품셈 항목 상세 조회",
       description:
-        "항목코드(예: '1-1-1', '6-3-2')를 입력하면 해당 표준품셈 항목의 전체 본문과 표(수량·단위·품 등)를 반환합니다.",
+        "항목코드(예: '1-1-1', '6-3-2')를 입력하면 해당 표준품셈 항목의 전체 본문과 표(수량·단위·품 등)를 반환합니다. 동일 항목코드가 여러 부문에 있을 수 있으므로, 필요하면 bumun으로 부문을 지정하십시오.",
       inputSchema: {
         item_code: z.string().describe("항목코드 (예: '1-1-1')"),
+        bumun: z
+          .enum(["공통부문", "토목부문", "건축부문", "기계설비부문", "유지관리부문"])
+          .optional()
+          .describe("동일 코드가 여러 부문에 있을 때 부문을 지정"),
       },
     },
-    async ({ item_code }) => {
-      const item = DATA.find((d) => d.ic === item_code.trim());
-      if (!item) {
+    async ({ item_code, bumun }) => {
+      const code = item_code.trim();
+      let matches = DATA.filter((d) => d.ic === code);
+      if (bumun) matches = matches.filter((d) => d.b === bumun);
+      if (matches.length === 0) {
         return {
           content: [
             {
@@ -180,7 +186,20 @@ function createServer() {
           ],
         };
       }
-      return { content: [{ type: "text", text: renderItem(item) }] };
+      if (matches.length > 1) {
+        const list = matches
+          .map((m) => `- ${m.b}: [${m.ic}] ${m.it} (${m.cn}장 ${m.ct} > ${m.sc} ${m.st})`)
+          .join("\n");
+        return {
+          content: [
+            {
+              type: "text",
+              text: `항목코드 "${code}"가 여러 부문에 존재합니다. bumun 옵션으로 부문을 지정해 다시 조회하시기 바랍니다.\n\n${list}`,
+            },
+          ],
+        };
+      }
+      return { content: [{ type: "text", text: renderItem(matches[0]) }] };
     }
   );
 
@@ -190,9 +209,9 @@ function createServer() {
     {
       title: "표준품셈 목차 조회",
       description:
-        "표준품셈의 부문/장/절 목차 구조를 조회합니다. 부문을 지정하지 않으면 전체 부문(공통부문 1~8장, 건축부문, 유지관리부문) 목차를 반환합니다.",
+        "표준품셈의 부문/장/절 목차 구조를 조회합니다. 부문을 지정하지 않으면 전체 부문(공통·토목·건축·기계설비·유지관리) 목차를 반환합니다.",
       inputSchema: {
-        bumun: z.enum(["공통부문", "건축부문", "유지관리부문"]).optional().describe("특정 부문만 조회하고 싶을 때 지정"),
+        bumun: z.enum(["공통부문", "토목부문", "건축부문", "기계설비부문", "유지관리부문"]).optional().describe("특정 부문만 조회하고 싶을 때 지정"),
       },
     },
     async ({ bumun }) => {
@@ -218,7 +237,7 @@ function createServer() {
       title: "특정 장/절의 표준품셈 항목 목록 조회",
       description: "부문과 장 번호(및 선택적으로 절 번호)를 지정하여 해당 범위에 속하는 모든 항목 목록(코드·제목)을 반환합니다.",
       inputSchema: {
-        bumun: z.enum(["공통부문", "건축부문", "유지관리부문"]).describe("부문"),
+        bumun: z.enum(["공통부문", "토목부문", "건축부문", "기계설비부문", "유지관리부문"]).describe("부문"),
         chapter_no: z.string().describe("장 번호 (예: '3')"),
         section_no: z.string().optional().describe("절 번호까지 좁히고 싶을 때 지정 (예: '3-2')"),
       },
