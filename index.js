@@ -66,6 +66,17 @@ function tableBlockToMarkdown(rows) {
   return lines.join("\n");
 }
 
+// 표(table) 블록을 탭 구분(TSV) 텍스트로 변환 (엑셀·한글 붙여넣기용)
+// 셀 안의 탭·줄바꿈은 TSV 구조가 깨지지 않도록 공백으로 치환한다.
+function tableBlockToTsv(rows) {
+  if (!rows || rows.length === 0) return "";
+  return rows
+    .map((row) =>
+      row.map((c) => (c ?? "").toString().replace(/[\t\r\n]+/g, " ").trim()).join("\t")
+    )
+    .join("\n");
+}
+
 // 항목 블록 전체를 사람이 읽기 좋은 텍스트로 렌더링
 function renderItem(item, { includeTables = true } = {}) {
   const header = `[${item.ic}] ${item.it}\n부문: ${item.b} / ${item.cn}장 ${item.ct} / ${item.sc} ${item.st} (원문 p.${item.pg})`;
@@ -74,7 +85,10 @@ function renderItem(item, { includeTables = true } = {}) {
     if (block.type === "p") {
       bodyParts.push(block.text);
     } else if (block.type === "table" && includeTables) {
-      bodyParts.push(tableBlockToMarkdown(block.rows));
+      const md = tableBlockToMarkdown(block.rows);
+      const tsv = tableBlockToTsv(block.rows);
+      // 표(마크다운) 바로 아래에 복사용 TSV 코드 블록을 함께 붙인다.
+      bodyParts.push(tsv ? `${md}\n\n\`\`\`text\n${tsv}\n\`\`\`` : md);
     }
   }
   return `${header}\n\n${bodyParts.join("\n\n")}`;
