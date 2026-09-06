@@ -6,16 +6,29 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { randomUUID } from "crypto";
+import {
+  getSwCostItem,
+  listSwCostCategories,
+  loadSwCostData,
+  renderSwCostItem,
+  searchSwCostItems,
+} from "./sw-cost.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ---------------------------------------------------------------------------
 // 데이터 로드
 // ---------------------------------------------------------------------------
-const DATA_PATH = path.join(__dirname, "data", "pyojunpumsem.json");
+const DATA_PATH = [
+  path.join(__dirname, "data", "pyojunpumsem.json"),
+  path.join(__dirname, "pyojunpumsem.json"),
+].find((candidate) => fs.existsSync(candidate));
+if (!DATA_PATH) throw new Error("표준품셈 데이터 파일을 찾을 수 없습니다.");
 const DATA = JSON.parse(fs.readFileSync(DATA_PATH, "utf-8"));
+const SW_COST_DATA = loadSwCostData(path.join(__dirname, "data", "sw-cost-standards.json"));
 
 console.error(`[표준품셈 MCP] 데이터 로드 완료: 총 ${DATA.length}개 항목`);
+console.error(`[정보화사업 대가산정 MCP] 데이터 로드 완료: 버전 ${SW_COST_DATA.metadata.version}`);
 
 // 부문/장/절 목차 인덱스 미리 구성
 function buildIndex() {
@@ -103,7 +116,7 @@ function createServer() {
       name: "표준품셈",
       version: "1.0.0",
       description:
-        "2026년 건설공사 표준품셈(공통·토목·건축·기계설비·유지관리 5개 부문 전체) 검색 MCP 서버. 참고용이며 공식 수치는 한국건설기술연구원 CODIL에서 확인 필요.",
+        "2026년 건설공사 표준품셈과 정보화사업 대가산정 기준 검색 MCP 서버. 참고용이며 최종 수치는 각 공식 원문에서 확인 필요.",
     },
     { capabilities: { tools: {} } }
   );
@@ -154,6 +167,73 @@ function createServer() {
           },
         ],
       };
+    }
+  );
+
+  // 5) 정보화사업 대가산정 기준 통합 검색
+  server.registerTool(
+    "search_sw_cost_standards",
+    {
+      title: "정보화사업 대가산정 기준 검색",
+      description:
+        "SW사업 대가산정 기준문서, 사업유형별 산정방식, 2026년 단가·SW기술자 평균임금과 공식 산정양식을 검색합니다. 여러 검색어는 AND 조건으로 적용합니다.",
+      inputSchema: {
+        query: z.string().describe("검색어 (예: '응용SW 개발자', '기능점수 재개발', 'SLA 운영')"),
+        category: z
+          .string()
+          .optional()
+          .describe("분류 필터 (계약기준, 기준문서, 기획단계, 구현단계, 운영단계, 데이터베이스, 인건비, 산정양식, 법령·행정규칙)"),
+        year: z.number().int().min(2000).max(2100).optional().describe("적용연도 필터"),
+        limit: z.number().int().min(1).max(50).optional().describe("최대 반환 개수 (기본 15)"),
+      },
+    },
+    async ({ query, category, year, limit }) => {
+      const results = searchSwCostItems(SW_COST_DATA, { query, category, year, limit });
+      if (!results.length) {
+        return { content: [{ type: "text", text: `"${query}"에 해당하는 정보화사업 대가산정 기준을 찾을 수 없습니다.` }] };
+      }
+      const text = results
+        .map((item) => `- [${item.id}] ${item.title} (${item.kind} / ${item.category}${item.year ? ` / ${item.year}년` : ""})`)
+        .join("\n");
+      return {
+        content: [{
+          type: "text",
+          text: `총 ${results.length}건 검색됨\n\n${text}\n\n※ 상세 값과 공식 출처는 get_sw_cost_standard 도구로 조회하십시오.`,
+        }],
+      };
+    }
+  );
+
+  // 6) 정보화사업 대가산정 항목 상세 조회
+  server.registerTool(
+    "get_sw_cost_standard",
+    {
+      title: "정보화사업 대가산정 항목 상세 조회",
+      description: "검색 결과의 ID로 산정방식, 단가, 적용기간과 공식 출처를 조회합니다.",
+      inputSchema: { id: z.string().describe("항목 ID (예: wage-2026-application-developer, method-development-fp)") },
+    },
+    async ({ id }) => {
+      const item = getSwCostItem(SW_COST_DATA, id.trim());
+      if (!item) {
+        return { content: [{ type: "text", text: `항목 ID "${id}"를 찾을 수 없습니다. search_sw_cost_standards로 먼저 검색하십시오.` }] };
+      }
+      return { content: [{ type: "text", text: renderSwCostItem(item, SW_COST_DATA.metadata.notice) }] };
+    }
+  );
+
+  // 7) 정보화사업 대가산정 분류 조회
+  server.registerTool(
+    "list_sw_cost_categories",
+    {
+      title: "정보화사업 대가산정 분류 조회",
+      description: "검색 가능한 대가산정 데이터 분류와 항목 수를 반환합니다.",
+      inputSchema: {},
+    },
+    async () => {
+      const text = listSwCostCategories(SW_COST_DATA)
+        .map((item) => `- ${item.category}: ${item.count}건`)
+        .join("\n");
+      return { content: [{ type: "text", text: `${text}\n\n데이터 버전: ${SW_COST_DATA.metadata.version}` }] };
     }
   );
 
@@ -273,6 +353,7 @@ app.get("/", (_req, res) => {
     name: "pyojunpumsem-mcp",
     status: "ok",
     items: DATA.length,
+    sw_cost_version: SW_COST_DATA.metadata.version,
     endpoint: "/mcp",
   });
 });

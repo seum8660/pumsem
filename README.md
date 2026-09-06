@@ -1,11 +1,11 @@
-# 표준품셈(2026) MCP 서버
+# 표준품셈·정보화사업 대가산정 MCP 서버
 
 2026년 건설공사 표준품셈(공통·토목·건축·기계설비·유지관리 5개 부문 전체, 총 1,092개 항목)을
-검색·조회할 수 있는 원격 MCP(Model Context Protocol) 서버입니다.
+검색·조회하고, 정보화사업 대가산정 기준·방식·연도별 단가를 함께 찾을 수 있는 원격 MCP(Model Context Protocol) 서버입니다.
 
 항목을 조회하면 마크다운 표와 함께 **탭 구분(TSV) 복사 블록**이 나와, 표를 엑셀·한글에 그대로 붙여넣을 수 있습니다.
 
-> ⚠️ 참고용 자료입니다. 공식 수치 확인은 반드시 한국건설기술연구원 CODIL(www.codil.or.kr)을 이용하시기 바랍니다.
+> ⚠️ 참고용 자료입니다. 건설공사 수치는 CODIL, 정보화사업 수치는 행정안전부와 한국인공지능·소프트웨어산업협회의 최신 원문을 확인하시기 바랍니다.
 
 ## 현재 배포 상태
 
@@ -15,7 +15,7 @@
 | 플랫폼 | Fly.io (리전: nrt, Tokyo) |
 | 서비스 URL | https://pyojunpumsem-mcp.fly.dev |
 | MCP 엔드포인트 | https://pyojunpumsem-mcp.fly.dev/mcp |
-| 헬스체크 | `curl https://pyojunpumsem-mcp.fly.dev/` → `{"name":"pyojunpumsem-mcp","status":"ok","items":1092,"endpoint":"/mcp"}` |
+| 헬스체크 | `curl https://pyojunpumsem-mcp.fly.dev/` → 표준품셈 항목 수와 정보화사업 데이터 버전 반환 |
 
 Claude에 바로 연결하려면 아래 [Claude에 연결하기](#claude에-연결하기) 섹션으로 이동하시면 됩니다.
 
@@ -27,19 +27,28 @@ Claude에 바로 연결하려면 아래 [Claude에 연결하기](#claude에-연�
 | `get_pyojunpumsem_item` | 항목코드로 상세 내용(표 포함) 조회 |
 | `list_pyojunpumsem_chapters` | 부문/장/절 목차 조회 |
 | `list_pyojunpumsem_items_in_section` | 특정 장/절에 속한 항목 목록 조회 |
+| `search_sw_cost_standards` | 정보화사업 기준문서·산정방식·단가·임금·양식 검색 |
+| `get_sw_cost_standard` | 정보화사업 항목의 값·적용기간·공식 출처 조회 |
+| `list_sw_cost_categories` | 정보화사업 대가산정 분류와 항목 수 조회 |
 
 ## 프로젝트 구조
 
 ```
 pyojunpumsem-mcp/
 ├── index.js              # MCP 서버 본체 (Node.js, StreamableHTTP, stateless)
+├── sw-cost.js            # 정보화사업 대가산정 검색·렌더링 모듈
+├── scripts/
+│   └── check-sw-cost-sources.js # 공식 게시물 변경 여부 점검
+├── test/
+│   └── sw-cost.test.js
 ├── package.json
 ├── package-lock.json
 ├── Dockerfile             # Fly.io / Cloud Run 공용 컨테이너 정의
 ├── .dockerignore
 ├── .gitignore
 ├── data/
-│   └── pyojunpumsem.json  # 표준품셈 추출 데이터 (1,092개 항목)
+│   └── sw-cost-standards.json # 정보화사업 공식 기준 구조화 색인
+├── pyojunpumsem.json      # 표준품셈 추출 데이터 (1,092개 항목)
 └── README.md
 ```
 
@@ -49,6 +58,12 @@ pyojunpumsem-mcp/
 npm install
 npm start
 # http://localhost:3000/mcp 에서 대기
+```
+
+공식 게시물에 기준값이 그대로 있는지 확인하려면 다음 명령을 실행합니다.
+
+```bash
+npm run check:sw-sources
 ```
 
 ## Claude에 연결하기
@@ -238,10 +253,20 @@ Dockerfile을 자동 감지시키는 방식(Cloud Run 콘솔 → 서비스 만�
 
 ## 데이터 출처
 
+### 건설공사 표준품셈
+
 - 원본: 2026년 건설공사 표준품셈 PDF (원문정오표 1차 반영본)
 - 추출 범위: 공통·토목·건축·기계설비·유지관리 5개 부문 전체
 - 추출 방식: pdfplumber 기반 explicit grid 파싱(표준품셈 검색 웹앱과 동일 파이프라인 결과물 재사용)
 
+### 정보화사업 대가산정
+
+- 상위 계약기준: 행정안전부 「지방자치단체 입찰 및 계약집행기준」
+- 세부 산정기준: 한국인공지능·소프트웨어산업협회 「SW사업 대가산정 가이드(2025년 개정판)」
+- 연도별 값: 2026년 SW기술자 평균임금, 기획단계 업무량 단가, 데이터베이스 구축 인건비 정정
+- 산정양식: 2026년 공식 엑셀 템플릿 15종의 제목과 적용 분야
+- 배포 원칙: 원문 PDF·HWP·XLSX·ZIP은 저장소에 복제하지 않고 공식 URL, 공개 수치와 수집본 SHA-256만 제공합니다.
+
 ## 참고
 
-- 본 데이터는 참고용이며, 공식 수치는 반드시 한국건설기술연구원 CODIL(www.codil.or.kr)에서 확인하시기 바랍니다.
+- 본 데이터는 참고용이며, 최종 예정가격과 계약내역은 최신 공식 원문과 기관 내부 검토 절차에 따라 확정해야 합니다.
