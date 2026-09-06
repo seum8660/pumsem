@@ -2,12 +2,14 @@
   "name": "pyojunpumsem-mcp",
   "type": "module",
   "version": "1.0.0",
-  "description": "2026년 건설공사 표준품셈(공통부문 1~8장, 건축부문, 유지관리부문) 검색용 원격 MCP 서버",
+  "description": "건설공사 표준품셈과 정보화사업 대가산정 기준 검색용 원격 MCP 서버",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node --test",
+    "check:sw-sources": "node scripts/check-sw-cost-sources.js"
   },
-  "keywords": ["mcp", "표준품셈", "건설공사"],
+  "keywords": ["mcp", "표준품셈", "건설공사", "정보화사업", "대가산정"],
   "author": "",
   "license": "ISC",
   "engines": {

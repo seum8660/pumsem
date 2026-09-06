@@ -1,0 +1,271 @@
+{
+  "metadata": {
+    "title": "정보화사업 대가산정 기준 색인",
+    "version": "2026.09",
+    "updated_at": "2026-09-06",
+    "scope": "지방자치단체 정보화사업 예정가격 검토를 위한 공식 기준·산정방식·연도별 단가 색인",
+    "notice": "참고용 색인입니다. 최종 예정가격은 사업 범위, 계약 조건, 최신 원문과 기관 내부 심사 절차를 확인하여 확정해야 합니다."
+  },
+  "sources": [
+    {
+      "id": "source-local-contract-372",
+      "category": "계약기준",
+      "title": "지방자치단체 입찰 및 계약집행기준",
+      "publisher": "행정안전부",
+      "document_no": "행정안전부 예규 제372호",
+      "published_at": "2026-06-30",
+      "effective_from": "2026-07-01",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000016&nttId=127353",
+      "summary": "지방계약의 예정가격 작성과 원가계산에 관한 상위 기준. 별도 대가기준이 있는 용역은 해당 기준에 따라 원가계산할 수 있다.",
+      "attachment": {
+        "filename": "[개정전문] 지방자치단체 입찰 및 계약집행기준.hwpx",
+        "sha256": "7bfc9da83db080c48f468fc406868bde879bf06a13f82e067c71f77d10adb69a"
+      },
+      "checks": ["지방자치단체 입찰 및 계약집행기준", "예규 제372호"]
+    },
+    {
+      "id": "source-sw-cost-guide-2025",
+      "category": "기준문서",
+      "title": "SW사업 대가산정 가이드(2025년 개정판)",
+      "publisher": "한국인공지능·소프트웨어산업협회",
+      "published_at": "2025-05-29",
+      "url": "https://www.sw.or.kr/site/sw/ex/board/View.do?bcIdx=63607&cbIdx=276",
+      "summary": "SW사업 기획·구현·운영과 데이터베이스 구축 사업의 대가산정 절차와 산식을 제시하는 실무 가이드.",
+      "attachment": {
+        "filename": "(2025년 개정판) SW사업 대가산정 가이드.pdf",
+        "sha256": "2c05b013c1be3d4e68e591c6ee72d4cf230e049752b3523acb8fcf7fb2ed2fcb"
+      },
+      "checks": ["SW사업 대가산정 가이드", "2025년 개정판"]
+    },
+    {
+      "id": "source-sw-cost-templates-2026",
+      "category": "산정양식",
+      "title": "SW사업대가 산정 방식별 엑셀 템플릿(2026년도)",
+      "publisher": "한국인공지능·소프트웨어산업협회",
+      "published_at": "2026-01-28",
+      "url": "https://www.sw.or.kr/site/sw/ex/board/View.do?bcIdx=65004&cbIdx=276",
+      "summary": "기획·구현·운영·데이터베이스 구축의 산정 방식별 공식 참고 양식 15종. 계산 결과는 반드시 이상 여부와 현행 입력값을 검토해야 한다.",
+      "attachment": {
+        "filename": "SW사업대가 산정양식(2026년 1월).zip",
+        "sha256": "9e059adb5d86b6c1ccbb9788ceaed815145becb3c4d88d40d57d1480cdb071a8"
+      },
+      "checks": ["SW사업대가 산정 방식별 엑셀 템플릿", "2026년도"]
+    },
+    {
+      "id": "source-sw-wage-2026",
+      "category": "인건비",
+      "title": "2026년 적용 SW기술자 평균임금",
+      "publisher": "한국인공지능·소프트웨어산업협회",
+      "published_at": "2025-12-19",
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31",
+      "url": "https://www.sw.or.kr/site/kipa/ex/board/View.do?bcIdx=64717&cbIdx=304&gubun=G",
+      "summary": "17개 SW기술자 직무의 월·일·시간 평균임금. 기본급, 제수당, 상여금, 퇴직급여충당금과 법인부담금을 포함한다.",
+      "attachment": {
+        "filename": "2026년 적용 SW기술자 평균임금 공표.xlsx",
+        "sha256": "7b38f642251f5f9c7d8c42b9b4466dbbe577678b2ca27b0f2815adfc2c275031"
+      },
+      "checks": ["2026년 적용 SW기술자 평균임금", "11,853,218"]
+    },
+    {
+      "id": "source-planning-rates-2026",
+      "category": "기획단계",
+      "title": "SW사업대가 기획단계 업무량 방식 수립비 2026년 단가",
+      "publisher": "한국인공지능·소프트웨어산업협회",
+      "published_at": "2025-12-30",
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31",
+      "url": "https://www.sw.or.kr/site/sw/ex/board/View.do?bcIdx=64804&cbIdx=276&searchExt1=",
+      "summary": "ISP, ISP/BPR, EA/ITA의 업무량 방식에 적용하는 2026년 단가. 투입공수 방식에는 직무별 단가를 적용한다.",
+      "checks": ["11,821,610", "12,118,873", "12,143,355"]
+    },
+    {
+      "id": "source-database-rates-2026",
+      "category": "데이터베이스",
+      "title": "데이터베이스 구축 사업 2026년 인건비 적용 기준 정정",
+      "publisher": "한국인공지능·소프트웨어산업협회",
+      "published_at": "2026-01-05",
+      "effective_from": "2026-01-01",
+      "effective_to": "2026-12-31",
+      "url": "https://www.sw.or.kr/site/sw/ex/board/View.do?bcIdx=64298&cbIdx=276&searchExt1=",
+      "summary": "학술연구용역 인건비 기준단가를 준용한 데이터베이스 구축 전문작업자 기본급과 상여금·퇴직급여충당금 한도.",
+      "checks": ["263,756", "176,312", "132,238"]
+    },
+    {
+      "id": "source-ito-sla-guide-2024",
+      "category": "운영단계",
+      "title": "서비스수준 기반 ITO서비스 대가산정 가이드(2024)",
+      "publisher": "한국인공지능·소프트웨어산업협회",
+      "published_at": "2024-12-30",
+      "url": "https://www.sw.or.kr/site/sw/ex/board/View.do?bcIdx=50760&cbIdx=276",
+      "summary": "서비스 수준을 기준으로 ITO 서비스 대가를 산정·정산하는 보조 가이드와 산정양식.",
+      "attachment": {
+        "filename": "서비스수준 기반 ITO서비스 대가산정 가이드 2024.pdf",
+        "sha256": "7f1c371014242a5d0e0c40ab5ca73b067214c17254c6b620d3d3443f4295cc49"
+      },
+      "checks": ["서비스수준", "ITO"]
+    },
+    {
+      "id": "source-sw-project-guideline",
+      "category": "법령·행정규칙",
+      "title": "소프트웨어사업 계약 및 관리감독에 관한 지침",
+      "publisher": "과학기술정보통신부",
+      "effective_from": "2023-05-15",
+      "url": "https://www.law.go.kr/행정규칙/소프트웨어사업계약및관리감독에관한지침",
+      "summary": "공공 SW사업의 계약 및 관리감독 절차를 규정하는 행정규칙."
+    },
+    {
+      "id": "source-information-system-guideline",
+      "category": "법령·행정규칙",
+      "title": "행정기관 및 공공기관 정보시스템 구축·운영 지침",
+      "publisher": "행정안전부",
+      "effective_from": "2025-01-02",
+      "url": "https://www.law.go.kr/행정규칙/행정기관및공공기관정보시스템구축·운영지침",
+      "summary": "행정기관과 공공기관 정보시스템의 기획, 구축, 운영 및 사업관리 기준을 규정하는 행정규칙."
+    }
+  ],
+  "methods": [
+    {
+      "id": "method-planning-workload",
+      "category": "기획단계",
+      "title": "ISP·ISP/BPR·EA/ITA 업무량 방식",
+      "summary": "업무별 난이도와 업무량을 산정한 뒤 해당 연도 업무량 단가를 적용한다.",
+      "inputs": ["업무유형", "업무량", "난이도", "2026년 업무량 단가"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-planning-rates-2026"]
+    },
+    {
+      "id": "method-planning-effort",
+      "category": "기획단계",
+      "title": "ISP·ISP/BPR·EA/ITA·ISMP·정보보안 투입공수 방식",
+      "summary": "직무별 투입인원, 기간과 투입률에 SW기술자 평균임금을 적용한다.",
+      "inputs": ["직무", "투입인원", "투입기간", "투입률", "직무별 평균임금"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-sw-wage-2026"]
+    },
+    {
+      "id": "method-development-fp",
+      "category": "구현단계",
+      "title": "SW개발비 기능점수 방식",
+      "summary": "사용자 관점의 기능규모를 기능점수로 산정하고 보정계수와 단가를 적용한다. 간이법과 정통법 양식을 제공한다.",
+      "inputs": ["기능점수", "규모보정", "애플리케이션 유형", "품질·특성 보정"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-sw-cost-templates-2026"]
+    },
+    {
+      "id": "method-ai-introduction",
+      "category": "구현단계",
+      "title": "인공지능(AI) 도입비 산정",
+      "summary": "AI 도입 과업을 식별하고 데이터, 모델, 플랫폼, 검증 등 사업 범위에 맞는 산정양식을 적용한다.",
+      "inputs": ["AI 과업범위", "데이터", "모델", "플랫폼", "검증"],
+      "source_ids": ["source-sw-cost-templates-2026"]
+    },
+    {
+      "id": "method-maintenance-rate",
+      "category": "운영단계",
+      "title": "응용SW 유지관리비 요율제",
+      "summary": "유지관리 대상 SW의 개발비 또는 재산정 기준금액에 유지관리 요율을 적용한다. 간이법과 정통법 양식을 제공한다.",
+      "inputs": ["유지관리 대상", "기준금액", "유지관리 요율", "서비스 범위"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-sw-cost-templates-2026"]
+    },
+    {
+      "id": "method-commercial-sw-maintenance",
+      "category": "운영단계",
+      "title": "상용SW 유지관리비",
+      "summary": "상용SW 라이선스와 유지관리 조건을 기준으로 거래가격, 계약조건과 산정양식을 함께 검토한다.",
+      "inputs": ["라이선스", "공급가격", "유지관리율", "계약기간"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-sw-cost-templates-2026"]
+    },
+    {
+      "id": "method-operation-effort",
+      "category": "운영단계",
+      "title": "SW운영비 투입공수 방식",
+      "summary": "운영업무별 직무, 인원, 기간과 투입률에 직무별 평균임금을 적용한다.",
+      "inputs": ["운영업무", "직무", "인원", "기간", "투입률"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-sw-wage-2026", "source-sw-cost-templates-2026"]
+    },
+    {
+      "id": "method-security-monitoring",
+      "category": "운영단계",
+      "title": "SW보안관제 투입공수 방식",
+      "summary": "보안관제 업무와 직무별 투입공수를 기준으로 대가를 산정한다.",
+      "inputs": ["관제범위", "운영시간", "직무", "투입공수"],
+      "source_ids": ["source-sw-wage-2026", "source-sw-cost-templates-2026"]
+    },
+    {
+      "id": "method-sla",
+      "category": "운영단계",
+      "title": "SLA 기반 유지관리·운영비",
+      "summary": "합의한 서비스 수준과 성과측정 결과를 유지관리·운영비 산정 및 정산에 반영한다.",
+      "inputs": ["서비스 항목", "SLA 지표", "목표수준", "측정결과", "정산규칙"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-ito-sla-guide-2024", "source-sw-cost-templates-2026"]
+    },
+    {
+      "id": "method-fixed-variable",
+      "category": "운영단계",
+      "title": "고정비·변동비 방식 유지관리·운영비",
+      "summary": "상시 고정업무와 업무량에 따라 변하는 업무를 분리하여 비용을 산정한다.",
+      "inputs": ["고정업무", "변동업무", "기준물량", "단가", "정산주기"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-sw-cost-templates-2026"]
+    },
+    {
+      "id": "method-redevelopment",
+      "category": "운영단계",
+      "title": "SW재개발비 기능점수 방식",
+      "summary": "기존 SW 변경·재개발 범위를 기능점수로 산정한다. 간이법과 정통법 양식을 제공한다.",
+      "inputs": ["변경 기능", "재개발 기능점수", "영향범위", "보정계수"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-sw-cost-templates-2026"]
+    },
+    {
+      "id": "method-database-build",
+      "category": "데이터베이스",
+      "title": "데이터베이스 구축비",
+      "summary": "데이터 유형, 작업요소, 물량과 난이도를 산정하고 전문작업자 등급별 인건비를 적용한다.",
+      "inputs": ["데이터 유형", "작업요소", "물량", "난이도", "작업자 등급"],
+      "source_ids": ["source-sw-cost-guide-2025", "source-database-rates-2026", "source-sw-cost-templates-2026"]
+    }
+  ],
+  "planning_rates": [
+    {"id":"rate-2026-isp","category":"기획단계","year":2026,"title":"ISP 업무량 방식 단가","amount":11821610,"unit":"원","source_ids":["source-planning-rates-2026"]},
+    {"id":"rate-2026-isp-bpr","category":"기획단계","year":2026,"title":"ISP/BPR 업무량 방식 단가","amount":12118873,"unit":"원","source_ids":["source-planning-rates-2026"]},
+    {"id":"rate-2026-ea-ita","category":"기획단계","year":2026,"title":"EA/ITA 업무량 방식 단가","amount":12143355,"unit":"원","source_ids":["source-planning-rates-2026"]}
+  ],
+  "sw_wages": [
+    {"id":"wage-2026-it-planner","year":2026,"title":"IT기획자","monthly":11853218,"daily":578206,"hourly":72276,"included_roles":["빅데이터기획자","인공지능서비스기획자"]},
+    {"id":"wage-2026-it-consultant","year":2026,"title":"IT컨설턴트","monthly":10707960,"daily":522340,"hourly":65292,"included_roles":["정보보호컨설턴트"]},
+    {"id":"wage-2026-business-analyst","year":2026,"title":"업무분석가","monthly":9740667,"daily":475154,"hourly":59394,"included_roles":[]},
+    {"id":"wage-2026-data-analyst","year":2026,"title":"데이터분석가","monthly":8499309,"daily":414600,"hourly":51825,"included_roles":[]},
+    {"id":"wage-2026-it-pm","year":2026,"title":"IT PM","monthly":10086804,"daily":492039,"hourly":61505,"included_roles":[]},
+    {"id":"wage-2026-it-architect","year":2026,"title":"IT아키텍트","monthly":11103230,"daily":541621,"hourly":67703,"included_roles":["SW아키텍트","인프라스트럭처아키텍트","데이터아키텍트","데이터베이스아키텍트","빅데이터아키텍트","인공지능아키텍트"]},
+    {"id":"wage-2026-uiux-planner-developer","year":2026,"title":"UI/UX기획/개발자","monthly":6901660,"daily":336666,"hourly":42083,"included_roles":["UI/UX기획자","UI/UX개발자"]},
+    {"id":"wage-2026-uiux-designer","year":2026,"title":"UI/UX디자이너","monthly":5159246,"daily":251671,"hourly":31459,"included_roles":[]},
+    {"id":"wage-2026-application-developer","year":2026,"title":"응용SW개발자","monthly":7754124,"daily":378250,"hourly":47281,"included_roles":["빅데이터개발자","인공지능SW개발자"]},
+    {"id":"wage-2026-system-developer","year":2026,"title":"시스템SW개발자","monthly":5840196,"daily":284888,"hourly":35611,"included_roles":["임베디드SW개발자"]},
+    {"id":"wage-2026-system-operator","year":2026,"title":"정보시스템운용자","monthly":10649117,"daily":519469,"hourly":64934,"included_roles":["데이터베이스운용자","NW엔지니어","IT시스템운용자","빅데이터엔지니어","인공지능서비스관리자"]},
+    {"id":"wage-2026-it-support","year":2026,"title":"IT지원기술자","monthly":5170016,"daily":252196,"hourly":31524,"included_roles":[]},
+    {"id":"wage-2026-it-marketer","year":2026,"title":"IT마케터","monthly":11793500,"daily":575293,"hourly":71912,"included_roles":["SW제품기획자","IT서비스기획자","IT기술영업"]},
+    {"id":"wage-2026-quality-manager","year":2026,"title":"IT품질관리자","monthly":11042071,"daily":538638,"hourly":67330,"included_roles":[]},
+    {"id":"wage-2026-tester","year":2026,"title":"IT테스터","monthly":4053137,"daily":197714,"hourly":24714,"included_roles":[]},
+    {"id":"wage-2026-auditor","year":2026,"title":"IT감리","monthly":11745154,"daily":572934,"hourly":71617,"included_roles":[]},
+    {"id":"wage-2026-security-specialist","year":2026,"title":"정보보안전문가","monthly":10411680,"daily":507887,"hourly":63486,"included_roles":["정보보호관리자","침해사고대응전문가"]}
+  ],
+  "database_rates": [
+    {"id":"rate-2026-db-a","category":"데이터베이스","year":2026,"title":"전문작업자 (가)","base_daily":263756,"maximum_bonus_daily":87919,"maximum_severance_daily":21980,"maximum_total_daily":373654,"unit":"원/일","source_ids":["source-database-rates-2026"]},
+    {"id":"rate-2026-db-b","category":"데이터베이스","year":2026,"title":"전문작업자 (나)","base_daily":176312,"maximum_bonus_daily":58771,"maximum_severance_daily":14693,"maximum_total_daily":249775,"unit":"원/일","source_ids":["source-database-rates-2026"]},
+    {"id":"rate-2026-db-c","category":"데이터베이스","year":2026,"title":"전문작업자 (다)","base_daily":132238,"maximum_bonus_daily":44079,"maximum_severance_daily":11020,"maximum_total_daily":187338,"unit":"원/일","source_ids":["source-database-rates-2026"]}
+  ],
+  "templates": [
+    {"id":"template-0101","category":"기획단계","title":"ISP·ISP/BPR·EA/ITA 컨설팅 업무량 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-0201","category":"기획단계","title":"ISP·ISP/BPR·EA/ITA·ISMP·정보보안 투입공수 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-1101","category":"구현단계","title":"SW개발비 간이법 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-1102","category":"구현단계","title":"SW개발비 정통법 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-1103","category":"구현단계","title":"인공지능(AI) 도입비 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-2101-simple","category":"운영단계","title":"응용SW 유지관리비 요율제 간이법 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-2101-full","category":"운영단계","title":"응용SW 유지관리비 요율제 정통법 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-2102","category":"운영단계","title":"상용SW 유지관리비 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-2201","category":"운영단계","title":"SW운영비 직무별 투입공수 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-2202","category":"운영단계","title":"SW보안관제 직무별 투입공수 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-2301","category":"운영단계","title":"SW 유지관리·운영 SLA 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-2302","category":"운영단계","title":"SW 유지관리·운영 고정비·변동비 방식 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-2401-simple","category":"운영단계","title":"SW재개발비 간이법 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-2401-full","category":"운영단계","title":"SW재개발비 정통법 산정양식","source_ids":["source-sw-cost-templates-2026"]},
+    {"id":"template-3101","category":"데이터베이스","title":"데이터베이스 구축비 산정양식","source_ids":["source-sw-cost-templates-2026", "source-database-rates-2026"]}
+  ]
+}
