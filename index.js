@@ -10,12 +10,25 @@ import { randomUUID } from "crypto";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ---------------------------------------------------------------------------
-// 데이터 로드
+// 데이터 로드 (건설공사 5개 부문 + 전기·소방·정보통신부문)
 // ---------------------------------------------------------------------------
-const DATA_PATH = path.join(__dirname, "data", "pyojunpumsem.json");
-const DATA = JSON.parse(fs.readFileSync(DATA_PATH, "utf-8"));
+const DATA_FILES = ["pyojunpumsem.json", "전기부문.json", "소방부문.json", "정보통신부문.json"];
+const DATA = [];
+for (const file of DATA_FILES) {
+  const p = path.join(__dirname, "data", file);
+  if (!fs.existsSync(p)) {
+    console.error(`[표준품셈 MCP] 데이터 파일 없음(건너뜀): ${file}`);
+    continue;
+  }
+  const rows = JSON.parse(fs.readFileSync(p, "utf-8"));
+  DATA.push(...rows);
+  console.error(`[표준품셈 MCP] ${file} 로드: ${rows.length}개 항목`);
+}
 
 console.error(`[표준품셈 MCP] 데이터 로드 완료: 총 ${DATA.length}개 항목`);
+
+// 부문 목록 (enum 공통 사용)
+const BUMUN_LIST = ["공통부문", "토목부문", "건축부문", "기계설비부문", "유지관리부문", "전기부문", "소방부문", "정보통신부문"];
 
 // 부문/장/절 목차 인덱스 미리 구성
 function buildIndex() {
@@ -47,7 +60,7 @@ function buildIndex() {
             .sort((a, b) => a.절번호.localeCompare(b.절번호, "ko", { numeric: true })),
         };
       })
-      .sort((a, b) => Number(a.장번호) - Number(b.장번호));
+      .sort((a, b) => String(a.장번호).localeCompare(String(b.장번호), "ko", { numeric: true }));
   }
   return result;
 }
@@ -101,9 +114,9 @@ function createServer() {
   const server = new McpServer(
     {
       name: "표준품셈",
-      version: "1.0.0",
+      version: "1.3.0",
       description:
-        "2026년 건설공사 표준품셈(공통·토목·건축·기계설비·유지관리 5개 부문 전체) 검색 MCP 서버. 참고용이며 공식 수치는 한국건설기술연구원 CODIL에서 확인 필요.",
+        "2026년 건설공사 표준품셈(공통·토목·건축·기계설비·유지관리) 2026년 전기공사 표준품셈(전기부문), 2026년 소방공사 표준품셈(소방부문), 2026년 정보통신공사 표준품셈(정보통신부문) 검색 MCP 서버. 참고용이며 공식 수치는 원문(건설: 한국건설기술연구원, 전기: 대한전기협회, 소방: 한국소방시설협회, 정보통신: 한국정보통신산업연구원)에서 확인 필요.",
     },
     { capabilities: { tools: {} } }
   );
@@ -114,11 +127,11 @@ function createServer() {
     {
       title: "표준품셈 키워드 검색",
       description:
-        "표준품셈 항목을 키워드로 검색합니다. 항목코드, 항목명, 장/절 제목, 본문 전체 텍스트를 대상으로 검색하며 공백으로 구분된 여러 단어는 모두 포함(AND)하는 항목만 반환합니다.",
+        "표준품셈 항목을 키워드로 검색합니다. 항목코드, 항목명, 장/절 제목, 본문 전체 텍스트를 대상으로 검색하며 공백으로 구분된 여러 단어는 모두 포함(AND)하는 항목만 반환합니다. 전기공사 품은 bumun='전기부문', 소방공사 품(감지기·소화전·스프링클러 등)은 bumun='소방부문', 정보통신공사 품(통신케이블·CCTV·방송·네트워크 등)은 bumun='정보통신부문'으로 지정하면 정확합니다.",
       inputSchema: {
-        query: z.string().describe("검색어 (예: '철근콘크리트', '방수', '조적 인력')"),
+        query: z.string().describe("검색어 (예: '철근콘크리트', '방수', '조적 인력', '전선관 배관')"),
         bumun: z
-          .enum(["공통부문", "토목부문", "건축부문", "기계설비부문", "유지관리부문"])
+          .enum(BUMUN_LIST)
           .optional()
           .describe("부문으로 결과를 한정하고 싶을 때만 지정"),
         limit: z.number().int().min(1).max(50).optional().describe("최대 반환 개수 (기본 15)"),
@@ -150,7 +163,7 @@ function createServer() {
         content: [
           {
             type: "text",
-            text: `총 ${results.length}건 검색됨 (상위 ${max}건 이내)\n\n${summary}\n\n※ 상세 내용(표 포함)은 get_pyojunpumsem_item 도구에 항목코드를 입력하여 조회하시기 바랍니다.`,
+            text: `총 ${results.length}건 검색됨 (상위 ${max}건 이내)\n\n${summary}\n\n※ 상세 내용(표 포함)은 get_pyojunpumsem_item 도구에 항목코드(와 부문)를 입력하여 조회하시기 바랍니다.`,
           },
         ],
       };
@@ -167,7 +180,7 @@ function createServer() {
       inputSchema: {
         item_code: z.string().describe("항목코드 (예: '1-1-1')"),
         bumun: z
-          .enum(["공통부문", "토목부문", "건축부문", "기계설비부문", "유지관리부문"])
+          .enum(BUMUN_LIST)
           .optional()
           .describe("동일 코드가 여러 부문에 있을 때 부문을 지정"),
       },
@@ -209,13 +222,13 @@ function createServer() {
     {
       title: "표준품셈 목차 조회",
       description:
-        "표준품셈의 부문/장/절 목차 구조를 조회합니다. 부문을 지정하지 않으면 전체 부문(공통·토목·건축·기계설비·유지관리) 목차를 반환합니다.",
+        "표준품셈의 부문/장/절 목차 구조를 조회합니다. 부문을 지정하지 않으면 전체 부문(공통·토목·건축·기계설비·유지관리·전기·소방·정보통신) 목차를 반환합니다.",
       inputSchema: {
-        bumun: z.enum(["공통부문", "토목부문", "건축부문", "기계설비부문", "유지관리부문"]).optional().describe("특정 부문만 조회하고 싶을 때 지정"),
+        bumun: z.enum(BUMUN_LIST).optional().describe("특정 부문만 조회하고 싶을 때 지정"),
       },
     },
     async ({ bumun }) => {
-      const target = bumun ? { [bumun]: CHAPTER_INDEX[bumun] } : CHAPTER_INDEX;
+      const target = bumun ? { [bumun]: CHAPTER_INDEX[bumun] ?? [] } : CHAPTER_INDEX;
       const lines = [];
       for (const [b, chapters] of Object.entries(target)) {
         lines.push(`■ ${b}`);
@@ -237,9 +250,9 @@ function createServer() {
       title: "특정 장/절의 표준품셈 항목 목록 조회",
       description: "부문과 장 번호(및 선택적으로 절 번호)를 지정하여 해당 범위에 속하는 모든 항목 목록(코드·제목)을 반환합니다.",
       inputSchema: {
-        bumun: z.enum(["공통부문", "토목부문", "건축부문", "기계설비부문", "유지관리부문"]).describe("부문"),
-        chapter_no: z.string().describe("장 번호 (예: '3')"),
-        section_no: z.string().optional().describe("절 번호까지 좁히고 싶을 때 지정 (예: '3-2')"),
+        bumun: z.enum(BUMUN_LIST).describe("부문"),
+        chapter_no: z.string().describe("장 번호 (예: '3'). 소방부문은 '편-장' 형식 (예: '6-3' = 제6편 제3장)"),
+        section_no: z.string().optional().describe("절 번호까지 좁히고 싶을 때 지정 (예: '3-2', 소방부문은 '6-3-2')"),
       },
     },
     async ({ bumun, chapter_no, section_no }) => {
@@ -269,10 +282,13 @@ const app = express();
 app.use(express.json({ limit: "5mb" }));
 
 app.get("/", (_req, res) => {
+  const byBumun = {};
+  for (const d of DATA) byBumun[d.b] = (byBumun[d.b] ?? 0) + 1;
   res.json({
     name: "pyojunpumsem-mcp",
     status: "ok",
     items: DATA.length,
+    byBumun,
     endpoint: "/mcp",
   });
 });
